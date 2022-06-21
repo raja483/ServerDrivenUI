@@ -1,0 +1,47 @@
+{
+    
+    "pageTitle" : "Steps",
+    "pageSubTitle": "Schedule a School Visit",
+    "pageType": "steps",
+    "components" : [
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "completed",
+                "title": "Review your school list and identify the school(s) that you want to schedule",
+                "subTitle": ""
+            }
+        },
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "Find a date that works for your schedule",
+                "subTitle": "Note: Each school(s) should have information on how to schedule a tour."
+            }
+        },
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "Tip: Some schools also offer department tours which can be very insightful if you already have a good idea on your area of study",
+                "subTitle": ""
+            }
+        },
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "If the school is far enough that this isn't a day trip don't forget to make your travel and lodging arrangements",
+                "subTitle": ""
+            }
+        }
+        
+    ]
+    
+}
+

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "JSONSchema",
+        "repositoryURL": "https://github.com/danielctull/JSONSchema",
+        "state": {
+          "branch": "main",
+          "revision": "0d966627fe6c033cde728987b6a5e3ed1be52357",
+          "version": null
+        }
+      },
+      {
+        "package": "Resolver",
+        "repositoryURL": "https://github.com/hmlongco/Resolver",
+        "state": {
+          "branch": null,
+          "revision": "97de0b0320036607564af4a60025b48f8d041221",
+          "version": "1.5.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

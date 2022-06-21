@@ -1,0 +1,25 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Label",
+      "text": "Scheduled a School Visit? Add it below to keep track of the details."
+    },
+    {
+      "type": "Label",
+      "text": "Which School are you visiting?"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/selectSchool"
+    },
+    {
+      "type": "Label",
+      "text": "Date Range of Visit"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/dateRange"
+    }
+  ]
+}

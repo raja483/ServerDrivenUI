@@ -1,0 +1,55 @@
+{
+    
+    "pageTitle" : "Create your question list",
+    "pageSubTitle": "School Visit #1 at Duke University",
+    "pageType": "createYourQuestionList",
+    "components" : [
+        
+        {
+            "type":"text",
+            "data": {
+                "fieldValueType":"plainText",
+                "fieldValue" : "Create a list of questions for the visit",
+                "sytling": "['fontSize':'15', 'fontWeight': 'bold']"
+            }
+        }
+        {
+            "type":"text",
+            "data": {
+                "fieldValueType":"plainText",
+                "fieldValue" : "We've put together a list of relevant questions to use during your school visit. the questions you select will ne available for you to answer during the school visit.",
+                "styling": "['fontSize':'15', 'fontWeight': 'bold']"
+            }
+        }
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "Find a date that works for your schedule",
+                "subTitle": "Note: Each school(s) should have information on how to schedule a tour."
+            }
+        },
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "Tip: Some schools also offer department tours which can be very insightful if you already have a good idea on your area of study",
+                "subTitle": ""
+            }
+        },
+        
+        {
+            "type":"progressListViewRow",
+            "data": {
+                "fieldValue" : "",
+                "title": "If the school is far enough that this isn't a day trip don't forget to make your travel and lodging arrangements",
+                "subTitle": ""
+            }
+        }
+        
+    ]
+}
+
+

@@ -1,0 +1,91 @@
+
+{
+
+   "pageTitle" : "Add a Scheduled Visit",
+   "pageType": "addAScheduledVisit",
+   "components" : [
+       
+       {
+           "type":"text",
+           "data" : {
+               "fieldValueType" : "plainText",
+               "fieldValue":"Scheduled a school visit? \nAdd it below to keep track of the details.",
+               "styling": "['fontSize':'15', 'fontWeight': 'bold']"
+           }
+       },
+       
+       {
+           "type":"dropdown",
+           "data" : {
+               "fieldName" : "Which school are you visiting?",
+               "hintText": "Select from your schools",
+               "fieldValue":"",
+               "isMandatoryField" : "false",
+               "dropdownData": "Oxford Academy, Academy of Holy Angels, Applewild School, Annie Wright Schools, Andrews Osborne Academy"
+           }
+       },
+       
+       {
+           "type":"dateRangeField",
+           "data" : {
+               "fieldName" : "Date Range of Visit",
+               "startdate":"",
+               "endData": "",
+               "startDateHint": "Start Date",
+               "endDateHint": "End Date",
+               "isMandatoryField" : "true",
+               "minValue" : "",
+               "maxValue" : "",
+           }
+       },
+       
+       {
+           "type":"dateField",
+           "data" : {
+               "fieldName" : "Tour Date/Time",
+               "fieldValue":"",
+               "hintText": "Date/Time",
+               "isMandatoryField" : "true",
+               "minValue" : "04252022",
+               "maxValue" : "04302022",
+               
+           }
+       },
+       
+       {
+           "type":"textField",
+           "data" : {
+               "fieldName" : "Tour Start Location",
+               "fieldValue":"",
+               "hintText": "Start Location",
+               "isMandatoryField" : "true",
+               "minValue" : "6",
+               "maxValue" : "20",
+               "inputType" : "email",
+               "validation_status" : "0",
+               "validation_URL" : ""
+               
+           }
+       },
+              
+       {
+           "type":"textField",
+           "data" : {
+               "fieldName" : "Suggested Parking Location (Optional)",
+               "fieldValue":"",
+               "hintText": "Parking Location",
+               "isMandatoryField" : "true",
+               "minValue" : "4",
+               "maxValue" : "8",
+               "inputType" : "number",
+               "validation_status" : "0",
+               "validation_URL" : ""
+               
+           }
+       }
+       
+        ]
+
+}
+
+

@@ -1,0 +1,14 @@
+{
+  "title": "Add a SchoolVisit",
+  "description": "",
+  "formType": "ADDSCHOOL",
+  "type": "object",
+  "properties": {
+    "selectSchool": {
+      "type": "string"
+    },
+    "dateRange": {
+      "type": "string"
+    }
+  }
+}
