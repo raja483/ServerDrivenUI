@@ -23,7 +23,15 @@
       "type": "string"
     },
     "suggestedParkingLocation": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+              "DE",
+              "IT",
+              "JP",
+              "US",
+              "RU",
+              "Other"
+                ]
     },
     "otherNotes": {
       "type": "string"

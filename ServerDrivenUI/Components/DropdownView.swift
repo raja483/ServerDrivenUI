@@ -95,3 +95,16 @@ extension DropdownView : UIComponent {
     }
     
 }
+
+extension DropdownView {
+    
+    static func prepareView(json: JSON) -> DropdownView {
+        
+        let name = json.label?.stringValue ?? ""
+        let model = DropdownModel(fieldName: name, hintText: "", fieldValue: "", isMandatoryField: "", dropdownData: "ABCD")
+        let viewModel = DropdownViewModel(model: model)
+        let view = DropdownView(vm: viewModel)
+        return view
+    }
+    
+}

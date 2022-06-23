@@ -94,3 +94,16 @@ extension DateFieldView : UIComponent {
     }
     
 }
+
+extension DateFieldView {
+    
+    static func prepareView(json: JSON) -> DateFieldView {
+        
+        let name = json.label?.stringValue ?? ""
+        let model = DateFieldModel(fieldName: name, fieldValue: "", hintText: "", isMandatoryField: "", minValue: "", maxValue: "")
+        let viewModel = DateFieldViewModel(model: model)
+        let view = DateFieldView(vm: viewModel)
+        return view
+    }
+    
+}
