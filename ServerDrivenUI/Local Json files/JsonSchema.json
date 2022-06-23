@@ -4,10 +4,28 @@
   "formType": "ADDSCHOOL",
   "type": "object",
   "properties": {
-    "selectSchool": {
+    "visitingSchool": {
       "type": "string"
     },
-    "dateRange": {
+    "startDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "tourDateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "tourStartLocation": {
+      "type": "string"
+    },
+    "suggestedParkingLocation": {
+      "type": "string"
+    },
+    "otherNotes": {
       "type": "string"
     }
   }

@@ -68,3 +68,18 @@ extension TextFieldView : UIComponent {
 }
 
 
+extension TextFieldView {
+    
+    static func prepareView(json: JSON) -> TextFieldView {
+        
+        let name = json.label?.stringValue ?? ""
+        
+        let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
+        
+        let viewModel = TextFieldViewModel(model: model)
+        let view = TextFieldView(vm: viewModel)
+        
+        return view
+    }
+    
+}

@@ -6,20 +6,46 @@
       "text": "Scheduled a School Visit? Add it below to keep track of the details."
     },
     {
-      "type": "Label",
-      "text": "Which School are you visiting?"
-    },
-    {
       "type": "Control",
-      "scope": "#/properties/selectSchool"
+      "scope": "#/properties/visitingSchool",
+      "label": "Which School are you visiting?"
     },
     {
       "type": "Label",
       "text": "Date Range of Visit"
     },
     {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/startDate",
+          "label": "Start Date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/endDate",
+          "label": "End Date"
+        }
+      ]
+    },
+    {
       "type": "Control",
-      "scope": "#/properties/dateRange"
+      "scope": "#/properties/tourDateTime",
+      "label": "Tour Date Time"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/suggestedParkingLocation",
+      "label": "Suggested Parking Location"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/otherNotes",
+      "label": "Other Notes",
+      "options": {
+        "multi": true
+      }
     }
   ]
 }
