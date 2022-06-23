@@ -30,6 +30,10 @@
       ]
     },
     {
+              "type": "Control",
+              "scope": "#/properties/nationality"
+    },
+    {
       "type": "Control",
       "scope": "#/properties/tourDateTime",
       "label": "Tour Date Time"

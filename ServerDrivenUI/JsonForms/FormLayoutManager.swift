@@ -101,10 +101,10 @@ class FormLayoutManager {
             anyView = TextFieldView.prepareView(json: uiSchema).toAnyView()
             
         case .dropdown:
-            anyView = Text("").toAnyView()
+            anyView = DropdownView.prepareView(json: uiSchema).toAnyView()
             
         case .dateField:
-            anyView = Text("").toAnyView()
+            anyView = DateFieldView.prepareView(json: uiSchema).toAnyView()
             
         case .dateRangeField:
             anyView = Text("").toAnyView()
@@ -194,10 +194,17 @@ class FormLayoutManager {
         }
         
         let cmpType = component.type?.stringValue ?? ""
-        
-        switch cmpType {
-        case "string":
+        let dateType = component.format?.stringValue ?? ""
+        let dropdownType = component.enum?.arrayValue ?? []
+        let dropdwonCount = dropdownType.count
+
+        switch (cmpType, dateType, dropdwonCount) {
+        case ("string", "", 0) :
             return .textField
+        case ("string", "date", 0) :
+            return .dateField
+        case ("string", "", dropdwonCount) :
+            return .dropdown
         default:
             print("No componet found")
         }
