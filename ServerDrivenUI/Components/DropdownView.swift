@@ -104,7 +104,7 @@ extension DropdownView {
     
     static func prepareView(schema: JSON, json: JSON) -> DropdownView {
         
-        let name = json.label?.stringValue ?? ""
+        let name = schema.label?.stringValue ?? ""
         let data = json.enum?.arrayValue ?? []
         
         let dropDownValues =  data.map { $0.stringValue ?? "" }.joined(separator: ",")
