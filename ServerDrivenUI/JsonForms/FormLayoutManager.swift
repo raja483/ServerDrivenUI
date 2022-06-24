@@ -88,7 +88,7 @@ class FormLayoutManager {
         }.toAnyView()
     }
     
-    private func prepareView(for cmpType: ComponentType, uiSchema: JSON) -> AnyView {
+    private func prepareView(for cmpType: ComponentType, uiSchema: JSON, jsonData:JSON) -> AnyView {
         
         var anyView = Text("").toAnyView()
         
@@ -101,7 +101,7 @@ class FormLayoutManager {
             anyView = TextFieldView.prepareView(json: uiSchema).toAnyView()
             
         case .dropdown:
-            anyView = DropdownView.prepareView(json: uiSchema).toAnyView()
+            anyView = DropdownView.prepareView(schema: uiSchema, json: jsonData).toAnyView()
             
         case .dateField:
             anyView = DateFieldView.prepareView(json: uiSchema).toAnyView()
@@ -172,7 +172,8 @@ class FormLayoutManager {
         case "Control":
             let scope = uiSchema.scope?.stringValue
             let cmpType = getComponent(scope: scope ?? "")
-            controller = prepareView(for: cmpType, uiSchema: uiSchema)
+            let cmpData = getComponentData(scope: scope ?? "")
+            controller = prepareView(for: cmpType, uiSchema: uiSchema, jsonData: cmpData)
             
         default:
             controller = Text("").toAnyView()
@@ -181,17 +182,24 @@ class FormLayoutManager {
         return controller
     }
     
+    private func getComponentData(scope:String) -> JSON {
+            
+            let schemaPath = scope.replacingOccurrences(of: "#/", with: "")
+            let pathComponents = schemaPath.components(separatedBy: "/")
+            
+            var component = schema
+            for pathComponent in pathComponents {
+                if let cmp = component[pathComponent] {
+                    component = cmp
+                }
+            }
+            return component
+        }
+    
     private func getComponent(scope: String) -> ComponentType {
         
-        let schemaPath = scope.replacingOccurrences(of: "#/", with: "")
-        let pathComponents = schemaPath.components(separatedBy: "/")
-        
-        var component = schema
-        for pathComponent in pathComponents {
-            if let cmp = component[pathComponent] {
-                component = cmp
-            }
-        }
+        let component = getComponentData(scope: scope)
+
         
         let cmpType = component.type?.stringValue ?? ""
         let dateType = component.format?.stringValue ?? ""
