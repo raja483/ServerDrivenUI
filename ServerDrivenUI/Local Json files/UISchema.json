@@ -15,7 +15,7 @@
       "text": "Date Range of Visit"
     },
     {
-      "type": "HorizontalLayout",
+      "type": "VerticalLayout",
       "elements": [
         {
           "type": "Control",
