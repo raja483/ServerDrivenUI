@@ -20,7 +20,6 @@ class ProgressListViewRowViewModel : ObservableObject{
     init(model : ProgressListViewRowModel){
         self.model = model
     }
-
 }
 
 struct ProgressListViewRow : View {
@@ -61,6 +60,10 @@ extension ProgressListViewRow : UIComponent {
     
     func getFieldValues() -> String {
         return vm.model.fieldValue
+    }
+    
+    func getFieldName() -> String {
+        return "\(vm.model.fieldValue)"
     }
     
 }

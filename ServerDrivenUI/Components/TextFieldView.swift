@@ -35,6 +35,7 @@ struct TextFieldView : View{
 
     @ObservedObject var vm : TextFieldViewModel
     @State var validDataLength : Bool = false
+       
     var body : some View {
         
         VStack(alignment : .leading) {
@@ -65,20 +66,23 @@ extension TextFieldView : UIComponent {
     func getFieldValues() -> String {
         return vm.model.fieldValue
     }
+    
+    func getFieldName() -> String {
+        return "\(vm.model.fieldName)"
+    }
 }
 
 
 extension TextFieldView {
     
-    static func prepareView(json: JSON) -> TextFieldView {
-        
-        let name = json.label?.stringValue ?? ""
+    static func prepareView(uiSchema: JSON) -> TextFieldView {
+    
+        let name = uiSchema.label?.stringValue ?? ""
         
         let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
-        
         let viewModel = TextFieldViewModel(model: model)
-        let view = TextFieldView(vm: viewModel)
         
+        let view = TextFieldView(vm: viewModel)
         return view
     }
     

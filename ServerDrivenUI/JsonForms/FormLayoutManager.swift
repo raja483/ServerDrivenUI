@@ -22,6 +22,9 @@ enum ControllerType {
 
 class FormLayoutManager {
     
+    
+    private var formViewModes = [UIComponent]()
+    
     private let schema: JSON
     init(schema: JSON) {
         self.schema = schema
@@ -71,7 +74,7 @@ class FormLayoutManager {
             // check for layout type
             let layout = getLayoutType(uiSchema: component)
             if  layout != .none {
-               let layout = prepareLayout(uiSchema: component)
+                let layout = prepareLayout(uiSchema: component)
                 viewComponentsArray.append(layout)
             }
             
@@ -97,16 +100,23 @@ class FormLayoutManager {
             anyView = Text("").toAnyView()
             
         case .textField:
-           
-            anyView = TextFieldView.prepareView(json: uiSchema).toAnyView()
+            
+            let cmp = TextFieldView.prepareView(uiSchema: uiSchema)
+            formViewModes.append(cmp)
+            anyView = cmp.toAnyView()
             
         case .dropdown:
-            anyView = DropdownView.prepareView(schema: uiSchema, json: jsonData).toAnyView()
+            let cmp = DropdownView.prepareView(schema: uiSchema, json: jsonData)
+            formViewModes.append(cmp)
+            anyView = cmp.toAnyView()
             
         case .dateField:
-            anyView = DateFieldView.prepareView(json: uiSchema).toAnyView()
+            let cmp = DateFieldView.prepareView(json: uiSchema)
+            formViewModes.append(cmp)
+            anyView = cmp.toAnyView()
             
         case .dateRangeField:
+            
             anyView = Text("").toAnyView()
             
         case .progressListViewRow:
@@ -127,7 +137,7 @@ class FormLayoutManager {
             // check for layout type
             let layout = getLayoutType(uiSchema: component)
             if  layout != .none {
-               let layout = prepareLayout(uiSchema: component)
+                let layout = prepareLayout(uiSchema: component)
                 viewComponentsArray.append(layout)
                 return nil
             }
@@ -183,29 +193,28 @@ class FormLayoutManager {
     }
     
     private func getComponentData(scope:String) -> JSON {
-            
-            let schemaPath = scope.replacingOccurrences(of: "#/", with: "")
-            let pathComponents = schemaPath.components(separatedBy: "/")
-            
-            var component = schema
-            for pathComponent in pathComponents {
-                if let cmp = component[pathComponent] {
-                    component = cmp
-                }
+        
+        let schemaPath = scope.replacingOccurrences(of: "#/", with: "")
+        let pathComponents = schemaPath.components(separatedBy: "/")
+        
+        var component = schema
+        for pathComponent in pathComponents {
+            if let cmp = component[pathComponent] {
+                component = cmp
             }
-            return component
         }
+        return component
+    }
     
     private func getComponent(scope: String) -> ComponentType {
         
         let component = getComponentData(scope: scope)
-
         
         let cmpType = component.type?.stringValue ?? ""
         let dateType = component.format?.stringValue ?? ""
         let dropdownType = component.enum?.arrayValue ?? []
         let dropdwonCount = dropdownType.count
-
+        
         switch (cmpType, dateType, dropdwonCount) {
         case ("string", "", 0) :
             return .textField
@@ -222,5 +231,17 @@ class FormLayoutManager {
     
 }
 
-
-
+extension FormLayoutManager {
+    func getFormData() -> [String: String] {
+        
+        var valuesDictionary = [String: String]()
+        for model in formViewModes {
+            
+            let name = model.getFieldName()
+            let value = model.getFieldValues()
+            valuesDictionary[name] = value
+            
+        }
+        return valuesDictionary
+    }
+}

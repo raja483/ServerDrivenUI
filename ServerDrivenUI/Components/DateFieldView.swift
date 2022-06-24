@@ -92,6 +92,9 @@ extension DateFieldView : UIComponent {
     func getFieldValues() -> String {
         return vm.model.fieldValue
     }
+    func getFieldName() -> String {
+        return "\(vm.model.fieldName)"
+    }
     
 }
 

@@ -15,4 +15,5 @@ struct SuccessViewModel {
     var tourDate = ""
     var startLocation = ""
     var parkingLocation = ""
+    var data: [String: Any]?
 }

@@ -60,4 +60,7 @@ extension TextView : UIComponent {
         return vm.model.fieldValue
     }
     
+    func getFieldName() -> String {
+        return "\(vm.model.fieldValue)"
+    }
 }
