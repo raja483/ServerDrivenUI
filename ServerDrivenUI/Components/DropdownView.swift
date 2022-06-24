@@ -94,6 +94,10 @@ extension DropdownView : UIComponent {
         return vm.model.fieldValue
     }
     
+    func getFieldName() -> String {
+        return "\(vm.model.fieldName)"
+    }
+    
 }
 
 extension DropdownView {

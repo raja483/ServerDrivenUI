@@ -121,5 +121,7 @@ extension DateRangeFieldView : UIComponent {
     func getFieldValues() -> String {
         return "\(vm.model.startdate),\(vm.model.endData)"
     }
-    
+    func getFieldName() -> String {
+        return "\(vm.model.fieldName)"
+    }
 }

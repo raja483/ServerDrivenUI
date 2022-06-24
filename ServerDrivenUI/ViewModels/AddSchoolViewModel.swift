@@ -12,8 +12,7 @@ import SwiftUI
 class AddSchoolViewModel: ObservableObject {
     
     @Published var view = Text("").toAnyView()
-    
-    @State var formData = [String: Any]()
+    private var formCreator: JsonFormCreator?
     
     init() {
                 
@@ -23,7 +22,7 @@ class AddSchoolViewModel: ObservableObject {
         
     }
     
-    func loadSchema() -> JSON? {
+    private func loadSchema() -> JSON? {
         
         guard let filePath = Bundle.main.path(forResource: "JsonSchema", ofType: "json") else {return nil}
         
@@ -34,7 +33,7 @@ class AddSchoolViewModel: ObservableObject {
         } catch { return nil }
     }
     
-    func loadUISchema() -> JSON? {
+    private func loadUISchema() -> JSON? {
         
         guard let filePath = Bundle.main.path(forResource: "UISchema", ofType: "json") else { return nil}
         do {
@@ -45,8 +44,17 @@ class AddSchoolViewModel: ObservableObject {
     }
     
     func prepareFormUI(for schema: JSON, uiSchema: JSON) -> AnyView {
-        let formCreator = JsonFormCreator(schema: schema, uiSchema: uiSchema, formData: $formData)
-        return formCreator.prepareForm()
+        formCreator = JsonFormCreator(schema: schema, uiSchema: uiSchema)
+        return formCreator!.prepareForm()
     }
     
+    func getData()-> [String: String]? {
+        
+        if let formCreator = formCreator {
+            
+            return formCreator.getFormData()
+        }
+        return nil
+        
+    }
 }

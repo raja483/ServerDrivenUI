@@ -12,6 +12,7 @@ protocol UIComponent {
     var componentType: ComponentType {get}
     func render() -> AnyView
     func getFieldValues() -> String
+    func getFieldName() -> String
 }
 
 extension UIComponent {

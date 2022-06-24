@@ -14,20 +14,19 @@ class JsonFormCreator {
     private let uiSchema: JSON
     private let initialData: JSON?
     
-    @Binding var formData: [String: Any]
+    private var formManager: FormLayoutManager?
     
-    init(schema: JSON, uiSchema: JSON, initialData: JSON? = nil, formData: Binding<[String: Any]>) {
+    init(schema: JSON, uiSchema: JSON, initialData: JSON? = nil) {
         self.schema = schema
         self.uiSchema = uiSchema
         self.initialData = initialData
-        self._formData = formData
     }
     
     func prepareForm() -> AnyView {
         
         let title = schema.title?.stringValue ?? ""
-        let formManager = FormLayoutManager(schema: schema, formData: $formData)
-        let view = formManager.prepareLayout(uiSchema: uiSchema)
+        formManager = FormLayoutManager(schema: schema)
+        let view = formManager!.prepareLayout(uiSchema: uiSchema)
         
         return ScrollView {
             VStack {
@@ -39,5 +38,11 @@ class JsonFormCreator {
         .toAnyView()
     }
     
-    
+    func getFormData() -> [String: String]? {
+        if let formManager = formManager {
+           let values = formManager.getFormData()
+            return values
+        }
+        return nil
+    }
 }
