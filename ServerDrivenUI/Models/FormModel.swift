@@ -31,11 +31,14 @@ struct Component: Codable {
             anyView = TextView(vm: TextViewModel(model: textModel))
             
         case .textField:
-           
-            guard let textFieldModel : TextFieldModel = self.data.decode() else {
+            guard let textModel : TextModel = self.data.decode() else {
                 return nil
             }
-            anyView = TextFieldView(vm: TextFieldViewModel(model: textFieldModel))
+            anyView = TextView(vm: TextViewModel(model: textModel))
+//            guard let textFieldModel : TextFieldModel = self.data.decode() else {
+//                return nil
+//            }
+//            anyView = TextFieldView(vm: TextFieldViewModel(model: textFieldModel))
         case .dateField:
             
             guard let dateFieldModel : DateFieldModel = self.data.decode() else {

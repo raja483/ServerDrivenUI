@@ -22,9 +22,12 @@ enum ControllerType {
 
 class FormLayoutManager {
     
+    @Binding var formData: [String: Any]
+    
     private let schema: JSON
-    init(schema: JSON) {
+    init(schema: JSON, formData: Binding<[String: Any]>) {
         self.schema = schema
+        self._formData = formData
     }
     
     func prepareLayout(uiSchema: JSON) -> AnyView {
@@ -98,7 +101,7 @@ class FormLayoutManager {
             
         case .textField:
            
-            anyView = TextFieldView.prepareView(json: uiSchema).toAnyView()
+            anyView = TextFieldView.prepareView(json: uiSchema, formData: $formData).toAnyView()
             
         case .dropdown:
             anyView = DropdownView.prepareView(json: uiSchema).toAnyView()

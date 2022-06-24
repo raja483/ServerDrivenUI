@@ -14,6 +14,10 @@ struct AddSchoolView: View {
     
     var body: some View {
         viewModel.view
+        Spacer()
+        Button("Done") {
+            print(viewModel.formData)
+        }.frame(width: 300, height: 44)
     }
 }
 

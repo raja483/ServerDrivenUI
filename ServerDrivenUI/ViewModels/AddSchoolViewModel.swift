@@ -13,11 +13,14 @@ class AddSchoolViewModel: ObservableObject {
     
     @Published var view = Text("").toAnyView()
     
+    @State var formData = [String: Any]()
+    
     init() {
-        
+                
         if let jsonSchema = loadSchema(), let uiSchema = loadUISchema() {
             self.view = prepareFormUI(for: jsonSchema, uiSchema: uiSchema)
         }
+        
     }
     
     func loadSchema() -> JSON? {
@@ -42,7 +45,7 @@ class AddSchoolViewModel: ObservableObject {
     }
     
     func prepareFormUI(for schema: JSON, uiSchema: JSON) -> AnyView {
-        let formCreator = JsonFormCreator(schema: schema, uiSchema: uiSchema)
+        let formCreator = JsonFormCreator(schema: schema, uiSchema: uiSchema, formData: $formData)
         return formCreator.prepareForm()
     }
     

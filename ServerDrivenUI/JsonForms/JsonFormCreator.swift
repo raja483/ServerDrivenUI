@@ -10,26 +10,33 @@ import SwiftUI
 
 class JsonFormCreator {
     
-   private let schema: JSON
-   private let uiSchema: JSON
-   private let initialData: JSON?
+    private let schema: JSON
+    private let uiSchema: JSON
+    private let initialData: JSON?
     
-    init(schema: JSON, uiSchema: JSON, initialData: JSON? = nil) {
+    @Binding var formData: [String: Any]
+    
+    init(schema: JSON, uiSchema: JSON, initialData: JSON? = nil, formData: Binding<[String: Any]>) {
         self.schema = schema
         self.uiSchema = uiSchema
         self.initialData = initialData
+        self._formData = formData
     }
-
+    
     func prepareForm() -> AnyView {
         
-        let formManager = FormLayoutManager(schema: schema)
+        let title = schema.title?.stringValue ?? ""
+        let formManager = FormLayoutManager(schema: schema, formData: $formData)
         let view = formManager.prepareLayout(uiSchema: uiSchema)
-    
+        
         return ScrollView {
             VStack {
                 view
             }.padding([.leading, .trailing])
-        }.toAnyView()
+        }
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .toAnyView()
     }
     
     

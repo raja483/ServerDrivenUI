@@ -35,6 +35,10 @@ struct TextFieldView : View{
 
     @ObservedObject var vm : TextFieldViewModel
     @State var validDataLength : Bool = false
+    
+    @Binding var formData: [String: Any]
+    @State private var fieldValue: String = ""
+   
     var body : some View {
         
         VStack(alignment : .leading) {
@@ -43,7 +47,12 @@ struct TextFieldView : View{
                 .font(.system(size: 14, weight: .semibold, design: .default))
                 .foregroundColor(.black)
             
-            TextField(vm.model.hintText, text: $vm.model.fieldValue)
+            TextField(vm.model.hintText, text: $fieldValue)
+                .onChange(of: fieldValue, perform: { newValue in
+                    formData[vm.model.fieldName] = newValue
+                    
+                    print(formData)
+                })
                 .foregroundColor(validDataLength ? Color(#colorLiteral(red: 0.1334922638, green: 0.2985338713, blue: 0.1076392498, alpha: 1)) : .black)
                 .font(.system(size: 16, weight: .regular, design: .default))
                 .frame(height: 40)
@@ -59,7 +68,7 @@ struct TextFieldView : View{
 extension TextFieldView : UIComponent {
     
     func render() -> AnyView {
-        TextFieldView(vm: vm).toAnyView()
+        TextFieldView(vm: vm, formData: $formData).toAnyView()
     }
     
     func getFieldValues() -> String {
@@ -70,14 +79,14 @@ extension TextFieldView : UIComponent {
 
 extension TextFieldView {
     
-    static func prepareView(json: JSON) -> TextFieldView {
+    static func prepareView(json: JSON, formData: Binding<[String: Any]>) -> TextFieldView {
         
         let name = json.label?.stringValue ?? ""
         
         let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
         
         let viewModel = TextFieldViewModel(model: model)
-        let view = TextFieldView(vm: viewModel)
+        let view = TextFieldView(vm: viewModel, formData: formData)
         
         return view
     }
