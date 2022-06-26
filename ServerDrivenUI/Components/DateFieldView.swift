@@ -63,7 +63,7 @@ struct DateFieldView : View{
             .frame(height: 44)
             .cornerRadius(5)
             .onTapGesture {
-                showDatePicker = !showDatePicker
+                //showDatePicker = !showDatePicker
             }
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.secondary))
             
