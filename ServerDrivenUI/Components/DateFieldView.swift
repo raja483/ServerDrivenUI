@@ -49,11 +49,13 @@ struct DateFieldView : View{
             
             HStack {
                 
-                let text = vm.model.fieldValue.count == 0 ? vm.model.hintText : vm.model.fieldValue
-                let textColor: Color = vm.model.fieldValue.count == 0 ? .gray : .black
-                Text(text)
-                    .padding(.leading)
-                    .foregroundColor(textColor)
+                DatePicker("", selection: $dateSelected, displayedComponents: [.date])
+                                  .pickerStyle(InlinePickerStyle())
+                                  .onChange(of: dateSelected) { newValue in
+                                      let dateFormater = DateFormatter()
+                                      dateFormater.dateFormat = "dd/MM/yyyy"
+                                      vm.model.fieldValue = dateFormater.string(from: newValue)
+                                  }.fixedSize().frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 Image(systemName: "chevron.down").padding()
                 
@@ -65,18 +67,6 @@ struct DateFieldView : View{
             }
             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.secondary))
             
-            if showDatePicker {
-                VStack {
-                    
-                    DatePicker("", selection: $dateSelected, displayedComponents: [.date])
-                        .datePickerStyle(WheelDatePickerStyle())
-                        .onChange(of: dateSelected) { newValue in
-                            let dateFormater = DateFormatter()
-                            dateFormater.dateFormat = "dd/MM/yyyy"
-                            vm.model.fieldValue = dateFormater.string(from: newValue)
-                        }
-                }
-            }
             
         }
         .padding()

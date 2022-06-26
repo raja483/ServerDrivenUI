@@ -104,6 +104,17 @@ class FormLayoutManager {
             let cmp = TextFieldView.prepareView(uiSchema: uiSchema)
             formViewModes.append(cmp)
             anyView = cmp.toAnyView()
+        case .textView:
+                   
+           let cmp = TextView.prepareView(uiSchema: uiSchema)
+           formViewModes.append(cmp)
+           anyView = cmp.toAnyView()
+           
+       case .editText:
+           
+           let cmp = CHTextEditor.prepareView(uiSchema: uiSchema)
+           formViewModes.append(cmp)
+           anyView = cmp.toAnyView()
             
         case .dropdown:
             let cmp = DropdownView.prepareView(schema: uiSchema, json: jsonData)
@@ -181,7 +192,7 @@ class FormLayoutManager {
             
         case "Control":
             let scope = uiSchema.scope?.stringValue
-            let cmpType = getComponent(scope: scope ?? "")
+            let cmpType = getComponent(scope: scope ?? "", uiSchema: uiSchema)
             let cmpData = getComponentData(scope: scope ?? "")
             controller = prepareView(for: cmpType, uiSchema: uiSchema, jsonData: cmpData)
             
@@ -206,7 +217,7 @@ class FormLayoutManager {
         return component
     }
     
-    private func getComponent(scope: String) -> ComponentType {
+    private func getComponent(scope: String, uiSchema: JSON) -> ComponentType {
         
         let component = getComponentData(scope: scope)
         
@@ -215,16 +226,26 @@ class FormLayoutManager {
         let dropdownType = component.enum?.arrayValue ?? []
         let dropdwonCount = dropdownType.count
         
-        switch (cmpType, dateType, dropdwonCount) {
-        case ("string", "", 0) :
-            return .textField
-        case ("string", "date", 0) :
-            return .dateField
-        case ("string", "", dropdwonCount) :
-            return .dropdown
-        default:
-            print("No componet found")
-        }
+        let isOtherNotes = scope.hasSuffix("otherNotes")
+               var isMultiType = false
+               if isOtherNotes {
+                   let textViewFormatType = uiSchema.options?.objectValue ?? [:]
+                   isMultiType =  (textViewFormatType["multi"] != nil)
+
+               }
+        
+        switch (cmpType, dateType, dropdwonCount, isMultiType) {
+           case ("string", "", 0, false) :
+               return .textField
+           case ("string", "date", 0, false) :
+               return .dateField
+           case ("string", "", 0, isMultiType) :
+               return .editText
+           case ("string", "", dropdwonCount, false) :
+               return .dropdown
+           default:
+               print("No componet found")
+           }
         
         return .none
     }
