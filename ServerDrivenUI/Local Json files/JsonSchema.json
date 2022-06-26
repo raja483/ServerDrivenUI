@@ -3,6 +3,11 @@
   "description": "",
   "formType": "ADDSCHOOL",
   "type": "object",
+  "required": [
+    "visitingSchool",
+    "startDate",
+    "endDate"
+  ],
   "properties": {
     "visitingSchool": {
       "type": "string"
@@ -25,13 +30,13 @@
     "suggestedParkingLocation": {
       "type": "string",
       "enum": [
-              "DE",
-              "IT",
-              "JP",
-              "US",
-              "RU",
-              "Other"
-                ]
+        "DE",
+        "IT",
+        "JP",
+        "US",
+        "RU",
+        "Other"
+      ]
     },
     "otherNotes": {
       "type": "string"
