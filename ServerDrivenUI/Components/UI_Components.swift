@@ -13,6 +13,7 @@ protocol UIComponent {
     func render() -> AnyView
     func getFieldValues() -> String
     func getFieldName() -> String
+    func isRequired() -> Bool
 }
 
 extension UIComponent {

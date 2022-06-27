@@ -70,16 +70,20 @@ extension TextFieldView : UIComponent {
     func getFieldName() -> String {
         return "\(vm.model.fieldName)"
     }
+    
+    func isRequired() -> Bool {
+        return Bool(vm.model.isMandatoryField) ?? false
+    }
 }
 
 
 extension TextFieldView {
     
-    static func prepareView(uiSchema: JSON) -> TextFieldView {
+    static func prepareView(uiSchema: JSON, isRequired: Bool) -> TextFieldView {
     
         let name = uiSchema.label?.stringValue ?? ""
         
-        let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
+        let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "\(isRequired)", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
         let viewModel = TextFieldViewModel(model: model)
         
         let view = TextFieldView(vm: viewModel)
