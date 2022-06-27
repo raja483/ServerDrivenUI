@@ -32,7 +32,7 @@ class TextFieldViewModel : ObservableObject{
 struct TextFieldView : View{
     
     let componentType: ComponentType = .textField
-
+    
     @ObservedObject var vm : TextFieldViewModel
     @State var validDataLength : Bool = false
        
@@ -54,6 +54,7 @@ struct TextFieldView : View{
                 .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.black))
         }
         .padding()
+        
     }
 }
 
@@ -72,7 +73,8 @@ extension TextFieldView : UIComponent {
     }
     
     func isRequired() -> Bool {
-        return Bool(vm.model.isMandatoryField) ?? false
+        let isReq = Bool(vm.model.isMandatoryField) ?? false
+        return isReq
     }
 }
 

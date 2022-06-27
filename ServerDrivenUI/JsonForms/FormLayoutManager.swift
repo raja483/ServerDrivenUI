@@ -278,17 +278,18 @@ class FormLayoutManager {
 
 extension FormLayoutManager {
     
-    func getFormData() -> [String: String] {
+    func getFormData() -> [String: String]? {
         
-        var valuesDictionary = [String: String]()
+        var valuesDictionary: [String: String]?  = [String: String]()
         for model in formViewModes {
             
             let name = model.getFieldName()
             let value = model.getFieldValues()
-            valuesDictionary[name] = value
+            valuesDictionary?[name] = value
             
             if model.isRequired() && value.isEmpty {
-                
+                valuesDictionary = nil
+                return valuesDictionary
             }
             
         }
