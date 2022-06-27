@@ -32,7 +32,7 @@ class TextFieldViewModel : ObservableObject{
 struct TextFieldView : View{
     
     let componentType: ComponentType = .textField
-
+    
     @ObservedObject var vm : TextFieldViewModel
     @State var validDataLength : Bool = false
        
@@ -54,6 +54,7 @@ struct TextFieldView : View{
                 .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.black))
         }
         .padding()
+        
     }
 }
 
@@ -70,16 +71,21 @@ extension TextFieldView : UIComponent {
     func getFieldName() -> String {
         return "\(vm.model.fieldName)"
     }
+    
+    func isRequired() -> Bool {
+        let isReq = Bool(vm.model.isMandatoryField) ?? false
+        return isReq
+    }
 }
 
 
 extension TextFieldView {
     
-    static func prepareView(uiSchema: JSON) -> TextFieldView {
+    static func prepareView(uiSchema: JSON, isRequired: Bool) -> TextFieldView {
     
         let name = uiSchema.label?.stringValue ?? ""
         
-        let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
+        let model = TextFieldModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: "\(isRequired)", minValue: "", maxValue: "", inputType: "", validation_status: "", validation_URL: "")
         let viewModel = TextFieldViewModel(model: model)
         
         let view = TextFieldView(vm: viewModel)

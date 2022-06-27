@@ -98,6 +98,10 @@ extension DropdownView : UIComponent {
         return "\(vm.model.fieldName)"
     }
     
+    func isRequired() -> Bool {
+        return false
+    }
+    
 }
 
 extension DropdownView {

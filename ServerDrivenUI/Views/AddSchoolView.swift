@@ -13,14 +13,23 @@ struct AddSchoolView: View {
     @Injected var viewModel: AddSchoolViewModel
     
     @State var showSuccessScreen = false
-    
+    @State private var showAlert = false
+
     var body: some View {
         GeometryReader { geo in
             VStack {
                 viewModel.view
                 Spacer()
                 Button("Done") {
-                    self.showSuccessScreen = true
+                    
+                    if let data =  viewModel.getData() {
+                    
+                        self.showSuccessScreen = true
+                        
+                    }
+                    else{
+                        self.showAlert = true
+                    }
                 }
                 .frame(width: geo.size.width - 32, height: 44)
                 .foregroundColor(.white)
@@ -34,9 +43,13 @@ struct AddSchoolView: View {
             
         } content: {
             
-            let data =  viewModel.getData()
+            if let data =  viewModel.getData() {
             let successModel = SuccessViewModel(data: data)
             SuccessView(viewModel: successModel)
+            }
+        }
+        .alert("Plase fill the all the required fields", isPresented: $showAlert) {
+            
         }
 
     }

@@ -124,4 +124,7 @@ extension DateRangeFieldView : UIComponent {
     func getFieldName() -> String {
         return "\(vm.model.fieldName)"
     }
+    func isRequired() -> Bool {
+        return false
+    }
 }

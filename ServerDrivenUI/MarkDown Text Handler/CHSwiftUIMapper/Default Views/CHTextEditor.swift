@@ -55,6 +55,10 @@ extension CHTextEditor: UIComponent {
     func getFieldValues() -> String {
         return vm.model.fieldValue
     }
+    
+    func isRequired() -> Bool {
+        return false
+    }
 }
 extension CHTextEditor {
     

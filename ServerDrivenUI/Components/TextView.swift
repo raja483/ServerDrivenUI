@@ -63,6 +63,10 @@ extension TextView : UIComponent {
     func getFieldName() -> String {
         return "\(vm.model.fieldValue)"
     }
+    
+    func isRequired() -> Bool {
+        return false
+    }
 }
 
 extension TextView {

@@ -22,7 +22,6 @@ enum ControllerType {
 
 class FormLayoutManager {
     
-    
     private var formViewModes = [UIComponent]()
     
     private let schema: JSON
@@ -91,7 +90,7 @@ class FormLayoutManager {
         }.toAnyView()
     }
     
-    private func prepareView(for cmpType: ComponentType, uiSchema: JSON, jsonData:JSON) -> AnyView {
+    private func prepareView(for cmpType: ComponentType, uiSchema: JSON, jsonSchema:JSON) -> AnyView {
         
         var anyView = Text("").toAnyView()
         
@@ -101,7 +100,11 @@ class FormLayoutManager {
             
         case .textField:
             
-            let cmp = TextFieldView.prepareView(uiSchema: uiSchema)
+            let scope = uiSchema.scope?.stringValue
+            let name = scope?.components(separatedBy: "/").last ?? ""
+            let isRequired = checkIsRequiredField(for: scope, fieldName: name)
+            
+            let cmp = TextFieldView.prepareView(uiSchema: uiSchema, isRequired: isRequired)
             formViewModes.append(cmp)
             anyView = cmp.toAnyView()
         case .textView:
@@ -117,7 +120,7 @@ class FormLayoutManager {
            anyView = cmp.toAnyView()
             
         case .dropdown:
-            let cmp = DropdownView.prepareView(schema: uiSchema, json: jsonData)
+            let cmp = DropdownView.prepareView(schema: uiSchema, json: jsonSchema)
             formViewModes.append(cmp)
             anyView = cmp.toAnyView()
             
@@ -194,7 +197,7 @@ class FormLayoutManager {
             let scope = uiSchema.scope?.stringValue
             let cmpType = getComponent(scope: scope ?? "", uiSchema: uiSchema)
             let cmpData = getComponentData(scope: scope ?? "")
-            controller = prepareView(for: cmpType, uiSchema: uiSchema, jsonData: cmpData)
+            controller = prepareView(for: cmpType, uiSchema: uiSchema, jsonSchema: cmpData)
             
         default:
             controller = Text("").toAnyView()
@@ -250,19 +253,47 @@ class FormLayoutManager {
         return .none
     }
     
+    private func checkIsRequiredField(for scope: String?, fieldName: String) -> Bool {
+        
+        var pathComponents = scope?.components(separatedBy: "/")
+        let _ = pathComponents?.popLast()
+        var requiredFields = [String]()
+        
+        if let path = pathComponents?.joined(separator: "/") {
+            
+            var object = schema
+            if path != "#/properties" {
+                object = getComponentData(scope: path)
+            }
+            
+            requiredFields = object.required?.arrayValue?.map { js -> String in
+                let str = js.stringValue ?? ""
+                return str
+            } ?? []
+        }
+        
+        return requiredFields.contains(fieldName)
+    }
 }
 
 extension FormLayoutManager {
-    func getFormData() -> [String: String] {
+    
+    func getFormData() -> [String: String]? {
         
-        var valuesDictionary = [String: String]()
+        var valuesDictionary: [String: String]?  = [String: String]()
         for model in formViewModes {
             
             let name = model.getFieldName()
             let value = model.getFieldValues()
-            valuesDictionary[name] = value
+            valuesDictionary?[name] = value
+            
+            if model.isRequired() && value.isEmpty {
+                valuesDictionary = nil
+                return valuesDictionary
+            }
             
         }
         return valuesDictionary
     }
 }
+

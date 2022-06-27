@@ -66,4 +66,8 @@ extension ProgressListViewRow : UIComponent {
         return "\(vm.model.fieldValue)"
     }
     
+    func isRequired() -> Bool {
+        return false
+    }
+    
 }

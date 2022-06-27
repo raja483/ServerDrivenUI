@@ -15,11 +15,9 @@ class AddSchoolViewModel: ObservableObject {
     private var formCreator: JsonFormCreator?
     
     init() {
-                
         if let jsonSchema = loadSchema(), let uiSchema = loadUISchema() {
             self.view = prepareFormUI(for: jsonSchema, uiSchema: uiSchema)
         }
-        
     }
     
     private func loadSchema() -> JSON? {
