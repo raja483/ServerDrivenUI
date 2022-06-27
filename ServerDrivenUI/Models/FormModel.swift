@@ -10,6 +10,8 @@ import Foundation
 enum ComponentType: String, Codable {
     case text
     case textField
+    case textView
+    case editText
     case dropdown
     case dateField
     case dateRangeField

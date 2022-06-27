@@ -68,3 +68,18 @@ extension TextView : UIComponent {
         return false
     }
 }
+
+extension TextView {
+    
+    static func prepareView(uiSchema: JSON) -> TextView {
+    
+        let name = uiSchema.label?.stringValue ?? ""
+        
+        let model = TextModel(fieldValueType: .markdownText, fieldValue: name, styling: "")
+        let viewModel = TextViewModel(model: model)
+        
+        let view = TextView(vm: viewModel)
+        return view
+    }
+    
+}

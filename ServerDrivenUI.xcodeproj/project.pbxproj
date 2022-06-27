@@ -104,6 +104,7 @@
 		1AD1A5E328604B4200949618 /* FormLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD1A5E228604B4200949618 /* FormLayoutManager.swift */; };
 		1AF40CA5282279BA00D08F83 /* ProgressSteps.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AF40CA4282279BA00D08F83 /* ProgressSteps.json */; };
 		1AF40CA728227F6000D08F83 /* ProgressStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF40CA628227F6000D08F83 /* ProgressStepsView.swift */; };
+		842A514E2868C81500737908 /* CHTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A514D2868C81500737908 /* CHTextEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -222,6 +223,7 @@
 		1AD1A5E228604B4200949618 /* FormLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLayoutManager.swift; sourceTree = "<group>"; };
 		1AF40CA4282279BA00D08F83 /* ProgressSteps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ProgressSteps.json; sourceTree = "<group>"; };
 		1AF40CA628227F6000D08F83 /* ProgressStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStepsView.swift; sourceTree = "<group>"; };
+		842A514D2868C81500737908 /* CHTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CHTextEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -436,6 +438,7 @@
 				1A797C8D28190C75005DD001 /* CHParagraphView.swift */,
 				1A797C8E28190C75005DD001 /* CHLinkView.swift */,
 				1A797C8F28190C75005DD001 /* CHTextBoxView.swift */,
+				842A514D2868C81500737908 /* CHTextEditor.swift */,
 			);
 			path = "Default Views";
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				1A797CC128190C75005DD001 /* CHListNumberedItemView.swift in Sources */,
 				1A797CC328190C75005DD001 /* CHNodeResolverView.swift in Sources */,
 				1A797CA828190C75005DD001 /* BulletNode.swift in Sources */,
+				842A514E2868C81500737908 /* CHTextEditor.swift in Sources */,
 				1AA6EB1A281AC4B90073AE4D /* Dictionary+Extension.swift in Sources */,
 				1A797CC428190C75005DD001 /* CHHeaderView.swift in Sources */,
 				1A797CC228190C75005DD001 /* CHListView.swift in Sources */,
