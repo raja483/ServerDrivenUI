@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0367EB286E1C8100ABED43 /* JsonRule+Utitlity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0367EA286E1C8100ABED43 /* JsonRule+Utitlity.swift */; };
 		1A0B51A7281E456A007845CC /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0B51A6281E456A007845CC /* Color+Extension.swift */; };
 		1A0B51A9281E4D0B007845CC /* DateRangeFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0B51A8281E4D0B007845CC /* DateRangeFieldView.swift */; };
 		1A0C34782824247F00488FCF /* ProgressListViewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C34772824247F00488FCF /* ProgressListViewRow.swift */; };
@@ -125,6 +126,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A0367EA286E1C8100ABED43 /* JsonRule+Utitlity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JsonRule+Utitlity.swift"; sourceTree = "<group>"; };
 		1A0B51A6281E456A007845CC /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		1A0B51A8281E4D0B007845CC /* DateRangeFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateRangeFieldView.swift; sourceTree = "<group>"; };
 		1A0C34772824247F00488FCF /* ProgressListViewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressListViewRow.swift; sourceTree = "<group>"; };
@@ -538,6 +540,7 @@
 			children = (
 				1AD1A5E028602C2100949618 /* JsonFormCreator.swift */,
 				1AD1A5E228604B4200949618 /* FormLayoutManager.swift */,
+				1A0367EA286E1C8100ABED43 /* JsonRule+Utitlity.swift */,
 			);
 			path = JsonForms;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				1AAABD46281D467F00FC965F /* SuccessView.swift in Sources */,
 				1A797CA228190C75005DD001 /* FragmentCursive.swift in Sources */,
 				1A797CC628190C75005DD001 /* CHQuoteView.swift in Sources */,
+				1A0367EB286E1C8100ABED43 /* JsonRule+Utitlity.swift in Sources */,
 				1A797CC128190C75005DD001 /* CHListNumberedItemView.swift in Sources */,
 				1A797CC328190C75005DD001 /* CHNodeResolverView.swift in Sources */,
 				1A797CA828190C75005DD001 /* BulletNode.swift in Sources */,

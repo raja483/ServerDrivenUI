@@ -30,10 +30,6 @@
       ]
     },
     {
-              "type": "Control",
-              "scope": "#/properties/nationality"
-    },
-    {
       "type": "Control",
       "scope": "#/properties/tourDateTime",
       "label": "Tour Date Time"
@@ -47,8 +43,13 @@
       "type": "Control",
       "scope": "#/properties/otherNotes",
       "label": "Other Notes",
-      "options": {
-        "multi": true
+      "rule": {
+        "effect": "HIDE",
+        "condition": {
+          "type": "LEAF",
+          "scope": "#/properties/suggestedParkingLocation",
+          "expectedValue": "IT"
+        }
       }
     }
   ]

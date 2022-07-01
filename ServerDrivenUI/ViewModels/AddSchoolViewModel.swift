@@ -15,8 +15,23 @@ class AddSchoolViewModel: ObservableObject {
     private var formCreator: JsonFormCreator?
     
     init() {
+        
         if let jsonSchema = loadSchema(), let uiSchema = loadUISchema() {
             self.view = prepareFormUI(for: jsonSchema, uiSchema: uiSchema)
+        }
+        
+        NotificationCenter.default.addObserver(forName: VALUE_CHANGE_NOTIF, object: nil, queue: .current) { notif in
+            self.reloadLayout()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func reloadLayout() {
+        if let updatedView = formCreator?.reloadLayout() {
+            view = updatedView
         }
     }
     

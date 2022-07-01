@@ -53,7 +53,7 @@ struct Component: Codable {
             guard let dropdownModel : DropdownModel = self.data.decode() else {
                 return nil
             }
-            anyView = DropdownView(vm: DropdownViewModel(model: dropdownModel))
+//            anyView = DropdownView(vm: DropdownViewModel(model: dropdownModel))
         
         case .dateRangeField:
             
