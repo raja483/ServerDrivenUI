@@ -26,6 +26,9 @@ struct CHTextEditor: View {
     
     @ObservedObject var vm: CHTextEditorViewModel
     let componentType: ComponentType = .editText
+    var scope: String
+    var rule: Rule
+    
     var body: some View {
        
         Text("\(vm.model.fieldName)")
@@ -49,7 +52,7 @@ extension CHTextEditor: UIComponent {
     }
     
     func render() -> AnyView {
-        CHTextEditor(vm: vm).toAnyView()
+        CHTextEditor(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
     func getFieldValues() -> String {
@@ -65,19 +68,13 @@ extension CHTextEditor {
     static func prepareView(uiSchema: JSON) -> CHTextEditor {
     
         let name = uiSchema.label?.stringValue ?? ""
-        let text = """
-        Styling a view is the most important part of building beautiful user interfaces. When it comes to the actual code syntax, we want reusable, customizable and clean solutions in our code.
-
-        This article will show you these 3 ways of styling a `SwiftUI.View`:
-
-        1. Initializer-based configuration
-        2. Method chaining using return-self
-        3. Styles in the Environment
-        """
-        let model = CHTextEditorModel(fieldValueType: .markdownText, fieldName:name, fieldValue: text, styling: "")
+        let scope = uiSchema.scope?.stringValue ?? ""
+        let rule = Rule.prepareObject(for: uiSchema)
+        
+        let model = CHTextEditorModel(fieldValueType: .plainText, fieldName:name, fieldValue: "", styling: "")
         let viewModel = CHTextEditorViewModel(model: model)
         
-        let view = CHTextEditor(vm: viewModel)
+        let view = CHTextEditor(vm: viewModel, scope: scope, rule: rule)
         return view
     }
     

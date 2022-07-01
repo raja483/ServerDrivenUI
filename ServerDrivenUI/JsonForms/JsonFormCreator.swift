@@ -45,4 +45,9 @@ class JsonFormCreator {
         }
         return nil
     }
+    
+    func reloadLayout() -> AnyView? {
+        let view = formManager?.reloadLayout(uiSchema: uiSchema)
+        return view
+    }
 }

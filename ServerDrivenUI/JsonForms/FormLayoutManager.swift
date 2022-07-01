@@ -20,11 +20,13 @@ enum ControllerType {
     case none
 }
 
+let VALUE_CHANGE_NOTIF = Notification.Name("ComponentValueChanged")
+
 class FormLayoutManager {
     
     private var formViewModes = [UIComponent]()
-    
     private let schema: JSON
+    
     init(schema: JSON) {
         self.schema = schema
     }
@@ -106,18 +108,18 @@ class FormLayoutManager {
             
             let cmp = TextFieldView.prepareView(uiSchema: uiSchema, isRequired: isRequired)
             formViewModes.append(cmp)
-            anyView = cmp.toAnyView()
+            anyView = cmp.padding().toAnyView()
         case .textView:
-                   
-           let cmp = TextView.prepareView(uiSchema: uiSchema)
-           formViewModes.append(cmp)
-           anyView = cmp.toAnyView()
-           
-       case .editText:
-           
-           let cmp = CHTextEditor.prepareView(uiSchema: uiSchema)
-           formViewModes.append(cmp)
-           anyView = cmp.toAnyView()
+            
+            let cmp = TextView.prepareView(uiSchema: uiSchema)
+            formViewModes.append(cmp)
+            anyView = cmp.toAnyView()
+            
+        case .editText:
+            
+            let cmp = CHTextEditor.prepareView(uiSchema: uiSchema)
+            formViewModes.append(cmp)
+            anyView = cmp.toAnyView()
             
         case .dropdown:
             let cmp = DropdownView.prepareView(schema: uiSchema, json: jsonSchema)
@@ -230,25 +232,25 @@ class FormLayoutManager {
         let dropdwonCount = dropdownType.count
         
         let isOtherNotes = scope.hasSuffix("otherNotes")
-               var isMultiType = false
-               if isOtherNotes {
-                   let textViewFormatType = uiSchema.options?.objectValue ?? [:]
-                   isMultiType =  (textViewFormatType["multi"] != nil)
-
-               }
+        var isMultiType = false
+        if isOtherNotes {
+            let textViewFormatType = uiSchema.options?.objectValue ?? [:]
+            isMultiType =  (textViewFormatType["multi"] != nil)
+            
+        }
         
         switch (cmpType, dateType, dropdwonCount, isMultiType) {
-           case ("string", "", 0, false) :
-               return .textField
-           case ("string", "date", 0, false) :
-               return .dateField
-           case ("string", "", 0, isMultiType) :
-               return .editText
-           case ("string", "", dropdwonCount, false) :
-               return .dropdown
-           default:
-               print("No componet found")
-           }
+        case ("string", "", 0, false) :
+            return .textField
+        case ("string", "date", 0, false) :
+            return .dateField
+        case ("string", "", 0, isMultiType) :
+            return .editText
+        case ("string", "", dropdwonCount, false) :
+            return .dropdown
+        default:
+            print("No componet found")
+        }
         
         return .none
     }
@@ -297,3 +299,141 @@ extension FormLayoutManager {
     }
 }
 
+// Reload Formlayout
+extension FormLayoutManager {
+    
+    func reloadLayout(uiSchema: JSON)-> AnyView  {
+        self.prepareComponentes()
+        let updatedView = self.prepareUpdatedLayout(uiSchema: uiSchema)
+        return updatedView
+    }
+    
+    private func prepareComponentes() {
+        
+        for i in 0..<formViewModes.count {
+            var cmp = formViewModes[i]
+            let scope = cmp.rule.scope
+            let exptValue = cmp.rule.expectedValue
+            let matchedComp = formViewModes.filter {
+                $0.scope == scope
+            }.first
+            
+            let isConditionMet = (exptValue == matchedComp?.getFieldValues() && !exptValue.isEmpty)
+            
+            let effect = cmp.rule.effect
+            switch effect {
+            case "HIDE":
+                cmp.isVisibile = !isConditionMet
+                
+            case "SHOW":
+                cmp.isVisibile = isConditionMet
+                
+            case "DISABLE":
+                cmp.isVisibile = !isConditionMet
+                
+            case "ENABLE":
+                cmp.isVisibile = isConditionMet
+                
+            default:
+                print("No Effect")
+            }
+
+        }
+    }
+    
+    private func prepareUpdatedLayout(uiSchema: JSON) -> AnyView {
+        
+        var view = Text("").toAnyView()
+        let layout = getLayoutType(uiSchema: uiSchema)
+        
+        switch layout {
+        case .vertical:
+            if let elements = uiSchema.elements?.arrayValue {
+                if let layout = prepareUpdatedVerticalLayout(elements: elements) {
+                    view = layout
+                }
+            }
+            else {
+#if DEBUG
+                print("No elements Found")
+#endif
+            }
+            
+        case .horizontal:
+            if let elements = uiSchema.elements?.arrayValue {
+                if let layout = prepareUpdatedHorizontalLayout(elements: elements) {
+                    view = layout
+                }
+            }
+            else {
+#if DEBUG
+                print("No elements Found")
+#endif
+            }
+        case .none:
+            print("No layout found")
+        }
+        return view
+    }
+    
+    private func prepareUpdatedVerticalLayout(elements: [JSON]) -> AnyView? {
+        
+        var viewComponentsArray = [AnyView]()
+        
+        for component in elements {
+            
+            // check for layout type
+            let layout = getLayoutType(uiSchema: component)
+            if  layout != .none {
+                let layout = prepareUpdatedLayout(uiSchema: component)
+                viewComponentsArray.append(layout)
+            }
+            
+            // check for controller
+            if let controller = getComponent(for: component) {
+                viewComponentsArray.append(controller)
+            }
+        }
+        
+        return VStack(alignment: .leading) {
+            ForEach(0..<viewComponentsArray.count) { index in
+                viewComponentsArray[index]
+            }
+        }.toAnyView()
+    }
+    
+    private func prepareUpdatedHorizontalLayout(elements: [JSON]) -> AnyView? {
+        
+        var viewComponentsArray = [AnyView]()
+        
+        for component in elements {
+            
+            // check for layout type
+            let layout = getLayoutType(uiSchema: component)
+            if  layout != .none {
+                let layout = prepareUpdatedLayout(uiSchema: component)
+                viewComponentsArray.append(layout)
+                return nil
+            }
+            
+            // check for controller
+            if let controller = getComponent(for: component) {
+                viewComponentsArray.append(controller)
+            }
+        }
+        
+        return HStack {
+            ForEach(0..<viewComponentsArray.count) { index in
+                viewComponentsArray[index]
+            }
+        }.toAnyView()
+        
+    }
+    
+    private func getComponent(for uiSchema: JSON) -> AnyView? {
+        
+        let scope = uiSchema.scope?.stringValue
+        let cmp = formViewModes.filter { $0.scope == scope }.first
+        return cmp?.render()
+    }
+}

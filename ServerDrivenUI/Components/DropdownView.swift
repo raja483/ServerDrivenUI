@@ -31,6 +31,9 @@ struct DropdownView : View {
     @State var selectedValue = ""
     let componentType: ComponentType = .dropdown
     
+    var scope: String
+    var rule: Rule
+    
     var body : some View {
         
         VStack{
@@ -73,6 +76,7 @@ struct DropdownView : View {
                     .pickerStyle(WheelPickerStyle())
                     .onChange(of: selectedValue) { newValue in
                         vm.model.fieldValue = newValue
+                        NotificationCenter.default.post(name: VALUE_CHANGE_NOTIF, object: newValue)
                     }
                     Divider()
                 }
@@ -87,7 +91,7 @@ struct DropdownView : View {
 extension DropdownView : UIComponent {
     
     func render() -> AnyView {
-        DropdownView(vm: vm).toAnyView()
+        DropdownView(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
     func getFieldValues() -> String {
@@ -111,11 +115,14 @@ extension DropdownView {
         let name = schema.label?.stringValue ?? ""
         let data = json.enum?.arrayValue ?? []
         
+        let scope = schema.scope?.stringValue ?? ""
+        let rule = Rule.prepareObject(for: schema)
+        
         let dropDownValues =  data.map { $0.stringValue ?? "" }.joined(separator: ",")
         
         let model = DropdownModel(fieldName: name, hintText: "", fieldValue: "", isMandatoryField: "", dropdownData: dropDownValues)
         let viewModel = DropdownViewModel(model: model)
-        let view = DropdownView(vm: viewModel)
+        let view = DropdownView(vm: viewModel, scope: scope, rule: rule)
         return view
     }
     
