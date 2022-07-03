@@ -103,6 +103,7 @@
 		1AD1A5DE28601B9900949618 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD1A5DD28601B9900949618 /* JSON.swift */; };
 		1AD1A5E128602C2100949618 /* JsonFormCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD1A5E028602C2100949618 /* JsonFormCreator.swift */; };
 		1AD1A5E328604B4200949618 /* FormLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD1A5E228604B4200949618 /* FormLayoutManager.swift */; };
+		1AD8B76D287158F300E08BF8 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD8B76C287158F300E08BF8 /* String+Extension.swift */; };
 		1AF40CA5282279BA00D08F83 /* ProgressSteps.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AF40CA4282279BA00D08F83 /* ProgressSteps.json */; };
 		1AF40CA728227F6000D08F83 /* ProgressStepsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF40CA628227F6000D08F83 /* ProgressStepsView.swift */; };
 		842A514E2868C81500737908 /* CHTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 842A514D2868C81500737908 /* CHTextEditor.swift */; };
@@ -223,6 +224,7 @@
 		1AD1A5DD28601B9900949618 /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		1AD1A5E028602C2100949618 /* JsonFormCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonFormCreator.swift; sourceTree = "<group>"; };
 		1AD1A5E228604B4200949618 /* FormLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLayoutManager.swift; sourceTree = "<group>"; };
+		1AD8B76C287158F300E08BF8 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		1AF40CA4282279BA00D08F83 /* ProgressSteps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ProgressSteps.json; sourceTree = "<group>"; };
 		1AF40CA628227F6000D08F83 /* ProgressStepsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStepsView.swift; sourceTree = "<group>"; };
 		842A514D2868C81500737908 /* CHTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CHTextEditor.swift; sourceTree = "<group>"; };
@@ -531,6 +533,7 @@
 				1AA6EB17281AC16B0073AE4D /* View+Extension.swift */,
 				1AA6EB19281AC4B90073AE4D /* Dictionary+Extension.swift */,
 				1A0B51A6281E456A007845CC /* Color+Extension.swift */,
+				1AD8B76C287158F300E08BF8 /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				1A7979C22818298B005DD001 /* ServerDrivenUIApp.swift in Sources */,
 				1AF40CA728227F6000D08F83 /* ProgressStepsView.swift in Sources */,
 				1A797CB528190C75005DD001 /* Lexer.swift in Sources */,
+				1AD8B76D287158F300E08BF8 /* String+Extension.swift in Sources */,
 				1A797CB828190C75005DD001 /* FragmentParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

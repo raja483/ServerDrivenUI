@@ -8,17 +8,18 @@
 import Foundation
 import SwiftUI
 
-struct ProgressListViewRowModel : Codable {
+class ProgressListViewRowViewModel : ObservableObject{
+    
+    @Published var isVisible = true
+
     let fieldValue : String
     let title: String
     let subTitle: String
-}
-
-class ProgressListViewRowViewModel : ObservableObject{
-    @Published var model : ProgressListViewRowModel
-
-    init(model : ProgressListViewRowModel){
-        self.model = model
+    
+    init(title: String, subTitle: String, fieldValue: String) {
+        self.title = title
+        self.subTitle = subTitle
+        self.fieldValue = fieldValue
     }
 }
 
@@ -26,22 +27,26 @@ struct ProgressListViewRow : View {
     
     @ObservedObject var vm : ProgressListViewRowViewModel
     @State var selectedValue = ""
+    
     let componentType: ComponentType = .progressListViewRow
+    var scope: String
+    var rule: Rule
     
     var body : some View {
         
         HStack {
-            
-            Image(systemName: vm.model.fieldValue == "" ? "circle" : "circle.fill")
-                .resizable()
-                .frame(width: 40, height: 40)
-                .foregroundColor(getCircleColor(for: vm.model.fieldValue))
-            
-            VStack(alignment: .leading) {
-                Text(vm.model.title)
-                    .font(.headline).padding()
-                if vm.model.subTitle.count > 0 {
-                    Text(vm.model.subTitle).padding()
+            if isVisibile {
+                Image(systemName: vm.fieldValue == "" ? "circle" : "circle.fill")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(getCircleColor(for: vm.fieldValue))
+                
+                VStack(alignment: .leading) {
+                    Text(vm.title)
+                        .font(.headline).padding()
+                    if vm.subTitle.count > 0 {
+                        Text(vm.subTitle).padding()
+                    }
                 }
             }
         }
@@ -53,17 +58,25 @@ struct ProgressListViewRow : View {
 }
 
 extension ProgressListViewRow : UIComponent {
-    
-    func render() -> AnyView {
-        ProgressListViewRow(vm: vm).toAnyView()
+    var isVisibile: Bool {
+        get {
+            vm.isVisible
+        }
+        set {
+            vm.isVisible = newValue
+        }
     }
     
-    func getFieldValues() -> String {
-        return vm.model.fieldValue
+    func getFieldValues() -> JSON {
+        JSON.string(vm.fieldValue)
+    }
+    
+    func render() -> AnyView {
+        ProgressListViewRow(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
     func getFieldName() -> String {
-        return "\(vm.model.fieldValue)"
+        return "\(vm.fieldValue)"
     }
     
     func isRequired() -> Bool {

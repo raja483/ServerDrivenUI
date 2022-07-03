@@ -7,19 +7,22 @@
 
 import SwiftUI
 
-struct DropdownModel : Codable {
+class DropdownViewModel : ObservableObject{
+    
+    @Published var isVisible = true
+
     let fieldName : String
     let hintText: String
     var fieldValue : String
-    var isMandatoryField : String
+    var isRequired : Bool
     var dropdownData: String
-}
-
-class DropdownViewModel : ObservableObject{
-    @Published var model : DropdownModel
     
-    init(model : DropdownModel){
-        self.model = model
+    init(fieldName: String, hintText: String, fieldValue: String, isRequired: Bool, dropdownData: String) {
+        self.fieldName = fieldName
+        self.hintText = hintText
+        self.fieldValue = fieldValue
+        self.isRequired = isRequired
+        self.dropdownData = dropdownData
     }
     
 }
@@ -36,18 +39,19 @@ struct DropdownView : View {
     
     var body : some View {
         
-        VStack{
+        VStack {
             
+            if isVisibile {
             VStack(alignment : .leading) {
                 
-                Text("\(vm.model.fieldName)\(vm.model.isMandatoryField == "true" ? "*" : "")")
+                Text("\(vm.fieldName)\(vm.isRequired ? "*" : "")")
                     .font(.system(size: 14, weight: .semibold, design: .default))
                     .foregroundColor(.black)
                 
                 HStack {
                     
-                    let text = vm.model.fieldValue.count == 0 ? vm.model.hintText : vm.model.fieldValue
-                    let textColor: Color = vm.model.fieldValue.count == 0 ? .gray : .black
+                    let text = vm.fieldValue.count == 0 ? vm.hintText : vm.fieldValue
+                    let textColor: Color = vm.fieldValue.count == 0 ? .gray : .black
                     Text(text)
                         .padding(.leading)
                         .foregroundColor(textColor)
@@ -69,37 +73,45 @@ struct DropdownView : View {
                 VStack {
                     
                     Picker("",selection: $selectedValue){
-                        ForEach(vm.model.dropdownData.components(separatedBy: ","), id:\.self) {
+                        ForEach(vm.dropdownData.components(separatedBy: ","), id:\.self) {
                             Text($0)
                         }
                     }
                     .pickerStyle(WheelPickerStyle())
                     .onChange(of: selectedValue) { newValue in
-                        vm.model.fieldValue = newValue
+                        vm.fieldValue = newValue
                         NotificationCenter.default.post(name: VALUE_CHANGE_NOTIF, object: newValue)
                     }
                     Divider()
                 }
             }
-            
+            }
         }
-        .padding()
+        
         
     }
 }
 
 extension DropdownView : UIComponent {
+    var isVisibile: Bool {
+        get {
+            vm.isVisible
+        }
+        set {
+            vm.isVisible = newValue
+        }
+    }
     
     func render() -> AnyView {
         DropdownView(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
-    func getFieldValues() -> String {
-        return vm.model.fieldValue
+    func getFieldValues() -> JSON {
+        return JSON.string(vm.fieldValue)
     }
     
     func getFieldName() -> String {
-        return "\(vm.model.fieldName)"
+        return "\(vm.fieldName)"
     }
     
     func isRequired() -> Bool {
@@ -119,9 +131,7 @@ extension DropdownView {
         let rule = Rule.prepareObject(for: schema)
         
         let dropDownValues =  data.map { $0.stringValue ?? "" }.joined(separator: ",")
-        
-        let model = DropdownModel(fieldName: name, hintText: "", fieldValue: "", isMandatoryField: "", dropdownData: dropDownValues)
-        let viewModel = DropdownViewModel(model: model)
+        let viewModel = DropdownViewModel(fieldName: name, hintText: name, fieldValue: "", isRequired: false, dropdownData: dropDownValues)
         let view = DropdownView(vm: viewModel, scope: scope, rule: rule)
         return view
     }

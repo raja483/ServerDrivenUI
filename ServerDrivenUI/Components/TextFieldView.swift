@@ -9,48 +9,34 @@ import Foundation
 import SwiftUI
 import Combine
 
-//struct TextFieldModel : Codable {
-//    let fieldName : String
-//    var fieldValue : String
-//    let hintText: String
-//    let isMandatoryField : String
-//    let minValue : String
-//    let maxValue  : String
-//    let inputType : String
-//    let validation_status : String
-//    let validation_URL : String
-//}
-
 class TextFieldViewModel: ObservableObject {
     
-//    @Published var model : TextFieldModel
-    let fieldName : String
     @Published var fieldValue : String
-    let isMandatoryField : Bool
+    @Published var isVisible = true
+    @Published var isEnabled = true
+    
+    let isRequired : Bool
+    let fieldName : String
     let hintText: String
         
-    @Published var isVisible = true
-    var isEnabled = true
-    
-    init(fieldName: String, fieldValue: String, hintText: String, isMandatoryField: Bool){
+    init(fieldName: String, fieldValue: String, hintText: String, isRequired: Bool) {
         self.fieldName = fieldName
         self.fieldValue = fieldValue
         self.hintText = hintText
-        self.isMandatoryField = isMandatoryField
+        self.isRequired = isRequired
     }
 }
 
 struct TextFieldView : View{
-    
-    let componentType: ComponentType = .textField
-    
+        
     @ObservedObject var vm : TextFieldViewModel
     @State var validDataLength : Bool = false
     @State var fieldValue = ""
     
+    let componentType: ComponentType = .textField
+
     var scope: String
     var rule: Rule
-    
     
     var body : some View {
         
@@ -58,11 +44,12 @@ struct TextFieldView : View{
             
             if vm.isVisible {
                 
-                Text("\(vm.fieldName)\(vm.isMandatoryField ? "*" : "")")
+                Text("\(vm.fieldName)\(vm.isRequired ? "*" : "")")
                     .font(.system(size: 14, weight: .semibold, design: .default))
                     .foregroundColor(.black)
                 
                 TextField(vm.hintText, text: $fieldValue)
+                    .disabled(!vm.isEnabled)
                     .foregroundColor(validDataLength ? Color(#colorLiteral(red: 0.1334922638, green: 0.2985338713, blue: 0.1076392498, alpha: 1)) : .black)
                     .font(.system(size: 16, weight: .regular, design: .default))
                     .frame(height: 40)
@@ -80,23 +67,21 @@ struct TextFieldView : View{
     }
     
     init(vm: TextFieldViewModel, scope: String, rule: Rule) {
-        
         self.vm = vm
-        self.fieldValue = vm.fieldValue
-        self.scope = scope
         self.rule = rule
+        self.scope = scope
+        self.fieldValue = vm.fieldValue
     }
 }
 
 extension TextFieldView : UIComponent {
    
-    
     func render() -> AnyView {
         TextFieldView(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
-    func getFieldValues() -> String {
-        return vm.fieldValue
+    func getFieldValues() -> JSON {
+        return  JSON.string(vm.fieldValue)
     }
     
     func getFieldName() -> String {
@@ -104,7 +89,7 @@ extension TextFieldView : UIComponent {
     }
     
     func isRequired() -> Bool {
-        let isReq = vm.isMandatoryField
+        let isReq = vm.isRequired
         return isReq
     }
     
@@ -118,16 +103,15 @@ extension TextFieldView : UIComponent {
     }
 }
 
-
 extension TextFieldView {
     
     static func prepareView(uiSchema: JSON, isRequired: Bool) -> TextFieldView {
     
         let name = uiSchema.label?.stringValue ?? ""
-        let scope = uiSchema.scope?.stringValue ?? ""
         let rule = Rule.prepareObject(for: uiSchema)
-        
-        let viewModel = TextFieldViewModel(fieldName: name, fieldValue: "", hintText: name, isMandatoryField: false)
+        let scope = uiSchema.scope?.stringValue ?? ""
+
+        let viewModel = TextFieldViewModel(fieldName: name, fieldValue: "", hintText: name, isRequired: false)
         
         let view = TextFieldView(vm: viewModel, scope: scope, rule: rule)
         viewModel.fieldValue = "test"

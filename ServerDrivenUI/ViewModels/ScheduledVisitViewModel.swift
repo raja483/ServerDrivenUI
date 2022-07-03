@@ -23,9 +23,9 @@ class ScheduledVisitViewModel: ObservableObject {
             self.formModel = formModel
             for component in formModel.components {
                 
-                if let anyView = component.getAnyView() {
-                    self.formComponents.append(anyView)
-                }
+//                if let anyView = component.getAnyView() {
+//                    self.formComponents.append(anyView)
+//                }
             }
         
         }catch{

@@ -8,6 +8,7 @@ import Foundation
 import SwiftUI
 
 protocol UIComponent {
+    
     var uniqueId: UUID { get }
     var componentType: ComponentType {get}
     var isVisibile: Bool { set get }
@@ -15,16 +16,13 @@ protocol UIComponent {
     var rule: Rule {set get}
     
     func render() -> AnyView
-    func getFieldValues() -> String
+    func getFieldValues() -> JSON
     func getFieldName() -> String
     func isRequired() -> Bool
 }
 
 extension UIComponent {
     var uniqueId: UUID { UUID() }
-    var isVisibile: Bool { set{} get {return true} }
-    var scope:String{ set{} get { return ""}}
-    var rule: Rule{ set{} get{ return Rule(effect: "", scope: "", expectedValue: "")}}
 }
 
 

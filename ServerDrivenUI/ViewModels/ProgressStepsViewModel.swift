@@ -22,12 +22,12 @@ class ProgressStepsViewModel: ObservableObject {
             let data = try Data(contentsOf: url)
             let form = try JSONDecoder().decode(FormModel.self, from: data)
             
-            for component in form.components {
-                
-                if let cmp = component.getAnyView() {
-                    self.components.append(cmp)
-                }
-            }
+//            for component in form.components {
+//                
+//                if let cmp = component.getAnyView() {
+//                    self.components.append(cmp)
+//                }
+//            }
             
         } catch {}
     }

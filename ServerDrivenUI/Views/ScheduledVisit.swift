@@ -77,20 +77,20 @@ struct ScheduledVisit: View {
                 
             case .textField:
                 if fieldName == "Tour Start Location" {
-                    vm.startLocation = str
+                    vm.startLocation = str.stringValue ?? ""
                 }else{
-                    vm.parkingLocation = str
+                    vm.parkingLocation = str.stringValue ?? ""
                 }
             case .dropdown:
-                vm.fromWhichScool = str
+                vm.fromWhichScool = str.stringValue ?? ""
                 
             case .dateField:
-                vm.tourDate = str
+                vm.tourDate = "" //(str.dateValue ?? Date())
 
             case .dateRangeField:
-                let array = str.components(separatedBy: ",")
-                vm.startDate = array.first ?? ""
-                vm.endDate = array.last ?? ""
+//                let array = str.components(separatedBy: ",")
+                vm.startDate = "" //array.first ?? ""
+                vm.endDate = "" //array.last ?? ""
                 
             default:
                 print("")

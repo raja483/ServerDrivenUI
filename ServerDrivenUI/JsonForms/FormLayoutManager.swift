@@ -108,7 +108,7 @@ class FormLayoutManager {
             
             let cmp = TextFieldView.prepareView(uiSchema: uiSchema, isRequired: isRequired)
             formViewModes.append(cmp)
-            anyView = cmp.padding().toAnyView()
+            anyView = cmp.toAnyView()
         case .textView:
             
             let cmp = TextView.prepareView(uiSchema: uiSchema)
@@ -127,7 +127,7 @@ class FormLayoutManager {
             anyView = cmp.toAnyView()
             
         case .dateField:
-            let cmp = DateFieldView.prepareView(json: uiSchema)
+            let cmp = DateFieldView.prepareView(uiSchema: uiSchema)
             formViewModes.append(cmp)
             anyView = cmp.toAnyView()
             
@@ -286,7 +286,8 @@ extension FormLayoutManager {
         for model in formViewModes {
             
             let name = model.getFieldName()
-            let value = model.getFieldValues()
+            let value = model.getFieldValues().stringValue ?? ""
+            
             valuesDictionary?[name] = value
             
             if model.isRequired() && value.isEmpty {
@@ -318,7 +319,9 @@ extension FormLayoutManager {
                 $0.scope == scope
             }.first
             
-            let isConditionMet = (exptValue == matchedComp?.getFieldValues() && !exptValue.isEmpty)
+            let val = matchedComp?.getFieldValues().stringValue ?? ""
+            
+            let isConditionMet = (exptValue == val && !exptValue.isEmpty)
             
             let effect = cmp.rule.effect
             switch effect {

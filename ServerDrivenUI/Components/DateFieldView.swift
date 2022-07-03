@@ -9,81 +9,90 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct DateFieldModel : Codable{
-    let fieldName : String
-    var fieldValue : String
-    let hintText: String
-    var isMandatoryField : String
-    let minValue : String
-    let maxValue  : String
-}
-
 class DateFieldViewModel : ObservableObject {
     
-    @Published var model : DateFieldModel
+    @Published var isVisible = true
+    @Published var isEnabled = true
+
+    let fieldName : String
+    var fieldValue : Date?
+    var isRequired: Bool
     
-    var date = Date()
-    
-    init(model : DateFieldModel){
-        self.model = model
+    init(fieldName: String, isRequired: Bool) {
+        self.fieldName = fieldName
+        self.isRequired = isRequired
     }
     
 }
 
 struct DateFieldView : View{
     
+    @ObservedObject var vm : DateFieldViewModel
+    
+    @State var showDatePicker : Bool = false
+    @State var dateSelected = Date()
+    
     let componentType: ComponentType = .dateField
 
-    @ObservedObject var vm : DateFieldViewModel
-    @State var showDatePicker : Bool = false
-    
-    @State var dateSelected = Date()
+    var scope: String
+    var rule: Rule
     
     var body : some View{
         
         VStack(alignment : .leading) {
             
-            Text("\(vm.model.fieldName)\(vm.model.isMandatoryField == "1" ? "*" : "")")
-                .font(.system(size: 14, weight: .semibold, design: .default))
-                .foregroundColor(.black)
-            
-            HStack {
+            if vm.isVisible {
+                Text("\(vm.fieldName)\(vm.isRequired ? "*" : "")")
+                    .font(.system(size: 14, weight: .semibold, design: .default))
+                    .foregroundColor(.black)
                 
-                DatePicker("", selection: $dateSelected, displayedComponents: [.date])
-                                  .pickerStyle(InlinePickerStyle())
-                                  .onChange(of: dateSelected) { newValue in
-                                      let dateFormater = DateFormatter()
-                                      dateFormater.dateFormat = "dd/MM/yyyy"
-                                      vm.model.fieldValue = dateFormater.string(from: newValue)
-                                  }.fixedSize().frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                Image(systemName: "chevron.down").padding()
-                
+                HStack {
+                    
+                    DatePicker("", selection: $dateSelected, displayedComponents: [.date])
+                        .disabled(!vm.isEnabled)
+                        .pickerStyle(InlinePickerStyle())
+                        .onChange(of: dateSelected) { newValue in
+                            vm.fieldValue = newValue
+                            NotificationCenter.default.post(name: VALUE_CHANGE_NOTIF, object: newValue)
+                        }.fixedSize().frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    Image(systemName: "chevron.down").padding()
+                    
+                }
+                .frame(height: 44)
+                .cornerRadius(5)
+                .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.secondary))
             }
-            .frame(height: 44)
-            .cornerRadius(5)
-            .onTapGesture {
-                //showDatePicker = !showDatePicker
-            }
-            .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.secondary))
-            
-            
         }
-        .padding()
+        
     }
 }
 
 extension DateFieldView : UIComponent {
     
-    func render() -> AnyView {
-        DateFieldView(vm: vm).toAnyView()
+    var isVisibile: Bool {
+        get {
+            vm.isVisible
+        }
+        set {
+            vm.isVisible = newValue
+        }
     }
     
-    func getFieldValues() -> String {
-        return vm.model.fieldValue
+    func render() -> AnyView {
+        DateFieldView(vm: vm, scope: scope, rule: rule).toAnyView()
     }
+    
+    func getFieldValues() -> JSON {
+        
+        if let date = vm.fieldValue {
+            return JSON.date(date)
+        }
+        return JSON.null
+    }
+    
     func getFieldName() -> String {
-        return "\(vm.model.fieldName)"
+        return "\(vm.fieldName)"
     }
     
     func isRequired() -> Bool {
@@ -94,12 +103,14 @@ extension DateFieldView : UIComponent {
 
 extension DateFieldView {
     
-    static func prepareView(json: JSON) -> DateFieldView {
+    static func prepareView(uiSchema: JSON) -> DateFieldView {
         
-        let name = json.label?.stringValue ?? ""
-        let model = DateFieldModel(fieldName: name, fieldValue: "", hintText: "", isMandatoryField: "", minValue: "", maxValue: "")
-        let viewModel = DateFieldViewModel(model: model)
-        let view = DateFieldView(vm: viewModel)
+        let name = uiSchema.label?.stringValue ?? ""
+        let scope = uiSchema.scope?.stringValue ?? ""
+        let rule = Rule.prepareObject(for: uiSchema)
+                
+        let viewModel = DateFieldViewModel(fieldName: name, isRequired: false)
+        let view = DateFieldView(vm: viewModel, scope: scope, rule: rule)
         return view
     }
     

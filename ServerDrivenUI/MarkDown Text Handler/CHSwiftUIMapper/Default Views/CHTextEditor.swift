@@ -12,10 +12,12 @@ struct CHTextEditorModel : Codable{
     let fieldName : String
     var fieldValue: String
     var styling: String
+
 }
 
 class CHTextEditorViewModel : ObservableObject{
     @Published var model : CHTextEditorModel
+    @Published var isVisibile = true
     
     init(model : CHTextEditorModel){
         self.model = model
@@ -42,9 +44,9 @@ struct CHTextEditor: View {
 }
 
 extension CHTextEditor: UIComponent {
+    
     func getFieldName() -> String {
-        
-        return ""
+        return vm.model.fieldValue
     }
     
     func getFieldValues() -> JSON {
@@ -55,12 +57,17 @@ extension CHTextEditor: UIComponent {
         CHTextEditor(vm: vm, scope: scope, rule: rule).toAnyView()
     }
     
-    func getFieldValues() -> String {
-        return vm.model.fieldValue
-    }
-    
     func isRequired() -> Bool {
         return false
+    }
+    
+    var isVisibile: Bool {
+        set{
+            vm.isVisibile = newValue
+        }
+        get{
+            vm.isVisibile
+        }
     }
 }
 extension CHTextEditor {
